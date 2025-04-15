@@ -90,7 +90,7 @@ const Login = () => {
         </form>
         <div className="login-helper">
           <p>
-            <strong>Demo Account:</strong> Username: 'kminchelle' Password: '0lelplR'
+            <strong>Demo Account:</strong> Username: 'emilys' Password: 'emilyspass'
           </p>
         </div>
       </div>
