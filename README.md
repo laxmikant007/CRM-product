@@ -1,12 +1,55 @@
-# React + Vite
+# CRM Product Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern customer relationship management system for effective product management and sales tracking.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Customer data management
+- Product catalog and inventory tracking
+- Sales pipeline visualization
+- Reporting and analytics dashboard
+- User role management
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 
+- Vite
+- Javascript
+- Redux 
+
+## Installation
+
+To get started with the CRM Product Management System, follow these steps:
+
+1. Clone the repository:
+   ```
+   git clone [repository-url]
+   ```
+
+2. Navigate to the project directory:
+   ```
+   cd CRM-Product-Management
+   ```
+
+3. Install the dependencies:
+   ```
+   npm install
+   ```
+
+4. Start the development server:
+   ```
+   npm run dev
+   ```
+
+## Usage
+
+The application will be available at `http://localhost:5173` by default.
+
+[Add specific instructions for using your application]
+
+## Configuration
+
+[Detail any configuration options and environment variables]
+
+## API Documentation
+
