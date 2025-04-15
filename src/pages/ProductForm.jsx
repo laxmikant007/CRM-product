@@ -138,6 +138,7 @@ const ProductForm = () => {
   // Shared input field styling
   const getInputStyle = (fieldName) => ({
     width: '100%',
+    color: 'black',
     padding: '12px 16px',
     fontSize: '15px',
     border: `1px solid ${activeField === fieldName ? '#4361ee' : '#ddd'}`,
@@ -288,11 +289,12 @@ const ProductForm = () => {
               gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
               gap: '24px',
               marginBottom: '24px',
+              color: 'black',
             }}>
               {[
-                { name: 'title', label: 'Product Title*', type: 'text', placeholder: 'Enter product title', required: true },
-                { name: 'brand', label: 'Brand*', type: 'text', placeholder: 'Enter brand name', required: true },
-                { name: 'category', label: 'Category*', type: 'text', placeholder: 'Enter category', required: true },
+                { name: 'title', label: 'Product Title*', type: 'text', placeholder: 'Enter product title', required: true, color: 'black' },
+                { name: 'brand', label: 'Brand*', type: 'text', placeholder: 'Enter brand name', required: true, color: 'black' },
+                { name: 'category', label: 'Category*', type: 'text', placeholder: 'Enter category', required: true, color: 'black' },
                 { name: 'price', label: 'Price*', type: 'number', placeholder: 'Enter price', required: true, step: '0.01', min: '0' },
                 { name: 'discountPercentage', label: 'Discount (%)', type: 'number', placeholder: 'Enter discount percentage', step: '0.01', min: '0', max: '100' },
                 { name: 'stock', label: 'Stock*', type: 'number', placeholder: 'Enter stock quantity', min: '0', required: true },
@@ -335,6 +337,7 @@ const ProductForm = () => {
               </label>
               <textarea
                 id="description"
+                color='black'
                 name="description"
                 value={formData.description}
                 onChange={onChange}

@@ -277,6 +277,7 @@ const ProductList = () => {
               onBlur={() => setSearchFocused(false)}
               style={{
                 width: '100%',
+                color: 'black',
                 padding: '14px 20px',
                 backgroundColor: 'white',
                 border: `1px solid ${searchFocused ? '#4361ee' : '#ddd'}`,
@@ -315,6 +316,7 @@ const ProductList = () => {
               onChange={(e) => setCurrentCategory(e.target.value)}
               style={{
                 width: '100%',
+                color: 'black',
                 padding: '14px 20px',
                 backgroundColor: 'white',
                 border: '1px solid #ddd',

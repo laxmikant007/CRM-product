@@ -74,7 +74,7 @@ const Login = () => {
         boxShadow: '0 15px 25px rgba(0, 0, 0, 0.1)',
         padding: '40px',
         width: '100%',
-        maxWidth: '420px',
+        maxWidth: '480px',
         transform: 'translateY(0)',
         animation: 'slideUp 0.5s ease-out',
         transition: 'transform 0.3s ease, box-shadow 0.3s ease',
@@ -84,14 +84,14 @@ const Login = () => {
           marginBottom: '30px',
         }}>
           <h1 style={{
-            fontSize: '28px',
+            fontSize: '32px',
             fontWeight: '700',
             color: '#333',
             marginBottom: '10px',
             animation: 'fadeIn 0.8s ease-out'
           }}>CRM Product Management</h1>
           <h2 style={{
-            fontSize: '20px',
+            fontSize: '22px',
             fontWeight: '500',
             color: '#666',
             animation: 'fadeIn 1s ease-out'
@@ -116,15 +116,15 @@ const Login = () => {
         
         <form onSubmit={onSubmit}>
           <div className="form-group" style={{
-            marginBottom: '24px',
+            marginBottom: '28px',
             position: 'relative',
           }}>
             <label 
               htmlFor="username" 
               style={{
                 display: 'block',
-                marginBottom: '8px',
-                fontSize: '15px',
+                marginBottom: '10px',
+                fontSize: '16px',
                 fontWeight: '500',
                 color: inputFocus === 'username' ? '#4361ee' : '#555',
                 transition: 'color 0.2s ease',
@@ -137,7 +137,6 @@ const Login = () => {
               position: 'relative',
               borderRadius: '8px',
               overflow: 'hidden',
-              boxShadow: inputFocus === 'username' ? '0 0 0 2px rgba(67, 97, 238, 0.3)' : 'none',
               transition: 'box-shadow 0.3s ease',
             }}>
               <input
@@ -152,28 +151,30 @@ const Login = () => {
                 required
                 style={{
                   width: '100%',
-                  padding: '14px 16px',
+                  color: 'black',
+                  padding: '16px 20px',
                   fontSize: '16px',
                   border: `1px solid ${inputFocus === 'username' ? '#4361ee' : '#ddd'}`,
                   borderRadius: '8px',
                   transition: 'border 0.3s ease, transform 0.3s ease',
                   outline: 'none',
-                  backgroundColor: '#f9fafc'
+                  backgroundColor: '#f9fafc',
+                  height: '56px'
                 }}
               />
             </div>
           </div>
           
           <div className="form-group" style={{
-            marginBottom: '24px',
+            marginBottom: '32px',
             position: 'relative',
           }}>
             <label 
               htmlFor="password" 
               style={{
                 display: 'block',
-                marginBottom: '8px',
-                fontSize: '15px',
+                marginBottom: '10px',
+                fontSize: '16px',
                 fontWeight: '500',
                 color: inputFocus === 'password' ? '#4361ee' : '#555',
                 transition: 'color 0.2s ease',
@@ -186,7 +187,6 @@ const Login = () => {
               position: 'relative',
               borderRadius: '8px',
               overflow: 'hidden',
-              boxShadow: inputFocus === 'password' ? '0 0 0 2px rgba(67, 97, 238, 0.3)' : 'none',
               transition: 'box-shadow 0.3s ease',
             }}>
               <input
@@ -201,14 +201,16 @@ const Login = () => {
                 required
                 style={{
                   width: '100%',
-                  padding: '14px 16px',
+                  color: 'black',
+                  padding: '16px 20px',
                   fontSize: '16px',
                   border: `1px solid ${inputFocus === 'password' ? '#4361ee' : '#ddd'}`,
                   borderRadius: '8px',
                   transition: 'border 0.3s ease, transform 0.3s ease',
                   outline: 'none',
                   backgroundColor: '#f9fafc',
-                  paddingRight: '48px'
+                  paddingRight: '60px',
+                  height: '56px'
                 }}
               />
               <button 
@@ -216,15 +218,15 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
                   position: 'absolute',
-                  right: '12px',
+                  right: '16px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   border: 'none',
                   background: 'none',
                   cursor: 'pointer',
-                  padding: '5px',
-                  color: '#888',
-                  fontSize: '14px',
+                  padding: '8px',
+                  color: '#666',
+                  fontSize: '15px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -242,19 +244,20 @@ const Login = () => {
             disabled={isLoading || isSubmitting}
             style={{
               width: '100%',
-              padding: '14px',
+              padding: '16px',
               background: isLoading || isSubmitting ? '#a0b0ea' : '#4361ee',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '16px',
+              fontSize: '18px',
               fontWeight: '600',
               cursor: isLoading || isSubmitting ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease',
               boxShadow: '0 4px 10px rgba(67, 97, 238, 0.2)',
               position: 'relative',
               overflow: 'hidden',
-              animation: 'fadeIn 1.3s ease-out'
+              animation: 'fadeIn 1.3s ease-out',
+              height: '56px'
             }}
             onMouseOver={(e) => {
               if (!isLoading && !isSubmitting) {
@@ -284,16 +287,16 @@ const Login = () => {
                   gap: '6px'
                 }}>
                   <span style={{
-                    width: '6px',
-                    height: '6px',
+                    width: '8px',
+                    height: '8px',
                     borderRadius: '50%',
                     background: 'white',
                     display: 'inline-block',
                     animation: 'bounce 1.4s infinite ease-in-out both'
                   }}></span>
                   <span style={{
-                    width: '6px',
-                    height: '6px',
+                    width: '8px',
+                    height: '8px',
                     borderRadius: '50%',
                     background: 'white',
                     display: 'inline-block',
@@ -301,8 +304,8 @@ const Login = () => {
                     animationDelay: '0.16s'
                   }}></span>
                   <span style={{
-                    width: '6px',
-                    height: '6px',
+                    width: '8px',
+                    height: '8px',
                     borderRadius: '50%',
                     background: 'white',
                     display: 'inline-block',
@@ -316,11 +319,11 @@ const Login = () => {
         </form>
         
         <div className="login-helper" style={{
-          marginTop: '24px',
-          padding: '16px',
+          marginTop: '30px',
+          padding: '18px',
           background: 'rgba(67, 97, 238, 0.05)',
           borderRadius: '8px',
-          fontSize: '14px',
+          fontSize: '15px',
           color: '#666',
           textAlign: 'center',
           animation: 'fadeIn 1.4s ease-out'
