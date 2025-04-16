@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, deleteProduct, reset } from '../features/product/productSlice';
@@ -14,7 +14,7 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('all');
-  const [limit, setLimit] = useState(40);
+  const [limit, setLimit] = useState(10);
   const [activeButton, setActiveButton] = useState(null);
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -23,21 +23,70 @@ const ProductList = () => {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
+  // API retry mechanism
+  const [retryCount, setRetryCount] = useState(0);
+  const retryTimeoutRef = useRef(null);
+  const maxRetries = 5;
+
+  // Function to fetch products with retry logic
+  const fetchProducts = useCallback(() => {
+    if (user) {
+      dispatch(getProducts({ limit }));
+    }
+  }, [dispatch, user, limit]);
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
-    } else {
-      dispatch(getProducts({ limit }));
+      return;
     }
-
-    if (isError) {
-      console.error(message);
-    }
+    
+    // Initial fetch
+    fetchProducts();
 
     return () => {
+      // Clean up any pending timeouts when component unmounts
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+      }
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch, limit]);
+  }, [user, navigate, dispatch, fetchProducts]);
+
+  // Handle API error and retry logic
+  useEffect(() => {
+    if (isError) {
+      console.error(`API Error: ${message}`);
+      
+      // Clear any existing timeout
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+      }
+
+      // If we haven't exceeded max retries, schedule another attempt
+      if (retryCount < maxRetries) {
+        // Exponential backoff: 2^retryCount * 1000 ms (1s, 2s, 4s, 8s, 16s)
+        const retryDelay = Math.min(Math.pow(2, retryCount) * 1000, 30000);
+        
+        console.log(`Retrying API call in ${retryDelay/1000} seconds (Attempt ${retryCount + 1}/${maxRetries})...`);
+        
+        retryTimeoutRef.current = setTimeout(() => {
+          setRetryCount(prevCount => prevCount + 1);
+          fetchProducts();
+        }, retryDelay);
+      } else {
+        console.error(`Maximum retry attempts (${maxRetries}) reached. Please try again later.`);
+      }
+    } else if (!isError && products) {
+      // Reset retry count on successful API call
+      setRetryCount(0);
+    }
+  }, [isError, message, retryCount, products, fetchProducts]);
+
+  // Reset retry count when limit changes
+  useEffect(() => {
+    setRetryCount(0);
+  }, [limit]);
 
   useEffect(() => {
     if (products) {
@@ -93,7 +142,7 @@ const ProductList = () => {
       dispatch(deleteProduct(deleteConfirmation))
         .then(() => {
           // Fetch products again after successful deletion
-          dispatch(getProducts({ limit }));
+          fetchProducts();
           setDeleteConfirmation(null);
         });
     }
@@ -120,6 +169,48 @@ const ProductList = () => {
   const getSortIndicator = (key) => {
     if (sortConfig.key !== key) return null;
     return sortConfig.direction === 'ascending' ? '↑' : '↓';
+  };
+
+  // Show error notification if max retries reached
+  const renderErrorNotification = () => {
+    if (isError && retryCount >= maxRetries) {
+      return (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          background: '#f94144',
+          color: 'white',
+          padding: '15px 20px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          zIndex: 1000,
+          animation: 'slideIn 0.3s ease',
+          maxWidth: '400px',
+        }}>
+          <div style={{ fontWeight: '600', marginBottom: '5px' }}>Connection Error</div>
+          <div>Unable to connect to the server. Please check your connection and try again later.</div>
+          <button 
+            onClick={() => {
+              setRetryCount(0);
+              fetchProducts();
+            }}
+            style={{
+              marginTop: '10px',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              padding: '8px 12px',
+              borderRadius: '4px',
+              color: 'white',
+              cursor: 'pointer',
+            }}
+          >
+            Retry Now
+          </button>
+        </div>
+      );
+    }
+    return null;
   };
 
   if (isLoading) {
@@ -169,6 +260,7 @@ const ProductList = () => {
       background: '#f8f9fa',
       animation: 'fadeIn 0.5s ease',
     }}>
+      {renderErrorNotification()}
       <nav style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -708,6 +800,11 @@ const ProductList = () => {
         @keyframes bounce {
           0%, 80%, 100% { transform: scale(0); }
           40% { transform: scale(1); }
+        }
+        
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
         }
       `}</style>
     </div>

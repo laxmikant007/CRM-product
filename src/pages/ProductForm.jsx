@@ -30,6 +30,7 @@ const ProductForm = () => {
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [activeField, setActiveField] = useState(null);
   const [activeButton, setActiveButton] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
@@ -76,14 +77,22 @@ const ProductForm = () => {
   useEffect(() => {
     if (isSubmitting && isSuccess) {
       setIsSubmitting(false);
-      navigate('/products');
+      if (isEditing) {
+        setSuccessMessage('Product updated successfully!');
+        // Redirect after showing success message for 2 seconds
+        setTimeout(() => {
+          navigate('/products');
+        }, 2000);
+      } else {
+        navigate('/products');
+      }
     }
 
     if (isSubmitting && isError) {
       setIsSubmitting(false);
       setError(message);
     }
-  }, [isSubmitting, isSuccess, isError, message, navigate]);
+  }, [isSubmitting, isSuccess, isError, message, navigate, isEditing]);
 
   const onLogout = () => {
     dispatch(logout());
@@ -114,6 +123,7 @@ const ProductForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
+    setSuccessMessage('');
 
     // Filter out empty image URLs
     const images = formData.images.filter(image => image.trim() !== '');
@@ -280,6 +290,30 @@ const ProductForm = () => {
               animation: 'shake 0.5s ease',
             }}>
               {error}
+            </div>
+          )}
+          
+          {successMessage && (
+            <div style={{
+              background: 'rgba(39, 174, 96, 0.05)',
+              border: '1px solid rgba(39, 174, 96, 0.2)',
+              color: '#27ae60',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '24px',
+              fontSize: '14px',
+              animation: 'fadeIn 0.5s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z" fill="#27ae60"/>
+                </svg>
+                {successMessage}
+              </div>
+              <div style={{ fontSize: '13px', color: '#555' }}>Redirecting...</div>
             </div>
           )}
           
