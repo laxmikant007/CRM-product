@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_URL = 'https://vehicle-api-zzca.onrender.com';
+// const API_URL = 'http://localhost:3000';
+
+
 // Get all products
 export const getProducts = createAsyncThunk(
   'products/getAll',
-  async (_, thunkAPI) => {
+  async (params = {}, thunkAPI) => {
     try {
-      const response = await axios.get('https://dummyjson.com/products');
+      const { limit = 40 } = params; // Extract limit with default value
+      const response = await axios.get(`${API_URL}/products/all?limit=${limit}`);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to fetch products';
@@ -20,8 +25,8 @@ export const getProduct = createAsyncThunk(
   'products/getOne',
   async (id, thunkAPI) => {
     try {
-      const response = await axios.get(`https://dummyjson.com/products/${id}`);
-      return response.data;
+      const response = await axios.get(`${API_URL}/products/${id}`);
+      return response.data.productJson;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to fetch product';
       return thunkAPI.rejectWithValue(message);
@@ -34,7 +39,7 @@ export const createProduct = createAsyncThunk(
   'products/create',
   async (productData, thunkAPI) => {
     try {
-      const response = await axios.post('https://dummyjson.com/products/add', productData);
+      const response = await axios.post(`${API_URL}/products/add`, productData);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to create product';
@@ -48,7 +53,7 @@ export const updateProduct = createAsyncThunk(
   'products/update',
   async ({ id, productData }, thunkAPI) => {
     try {
-      const response = await axios.put(`https://dummyjson.com/products/${id}`, productData);
+      const response = await axios.put(`${API_URL}/products/${id}`, productData);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to update product';
@@ -62,7 +67,7 @@ export const deleteProduct = createAsyncThunk(
   'products/delete',
   async (id, thunkAPI) => {
     try {
-      const response = await axios.delete(`https://dummyjson.com/products/${id}`);
+      const response = await axios.delete(`${API_URL}/products/${id}`);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to delete product';

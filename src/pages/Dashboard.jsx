@@ -67,14 +67,14 @@ const Dashboard = () => {
       // Calculate statistics
       const categories = [...new Set(products.map((product) => product.category))];
       const brands = [...new Set(products.map((product) => product.brand))];
-      const totalValue = products.reduce((acc, product) => acc + product.price, 0);
+      const totalValue = products.reduce((acc, product) => acc + parseFloat(product.price), 0);
       const lowStockProducts = products.filter(product => product.stock < 10).length;
 
       setStats({
         totalProducts: products.length,
         totalCategories: categories.length,
         totalBrands: brands.length,
-        totalValue: totalValue.toFixed(2),
+        totalValue: totalValue?.toFixed(2),
         lowStockProducts,
       });
 

@@ -14,6 +14,7 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('all');
+  const [limit, setLimit] = useState(40);
   const [activeButton, setActiveButton] = useState(null);
   const [searchFocused, setSearchFocused] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -26,7 +27,7 @@ const ProductList = () => {
     if (!user) {
       navigate('/login');
     } else {
-      dispatch(getProducts());
+      dispatch(getProducts({ limit }));
     }
 
     if (isError) {
@@ -36,7 +37,7 @@ const ProductList = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch]);
+  }, [user, navigate, isError, message, dispatch, limit]);
 
   useEffect(() => {
     if (products) {
@@ -89,8 +90,12 @@ const ProductList = () => {
 
   const confirmDelete = () => {
     if (deleteConfirmation) {
-      dispatch(deleteProduct(deleteConfirmation));
-      setDeleteConfirmation(null);
+      dispatch(deleteProduct(deleteConfirmation))
+        .then(() => {
+          // Fetch products again after successful deletion
+          dispatch(getProducts({ limit }));
+          setDeleteConfirmation(null);
+        });
     }
   };
 
@@ -309,8 +314,16 @@ const ProductList = () => {
             </svg>
           </div>
           <div style={{
-            width: '200px',
+            width: '160px',
           }}>
+            <div style={{
+              marginBottom: '6px',
+              fontSize: '14px',
+              color: '#666',
+              fontWeight: '500',
+            }}>
+              Category Filter
+            </div>
             <select
               value={currentCategory}
               onChange={(e) => setCurrentCategory(e.target.value)}
@@ -335,6 +348,45 @@ const ProductList = () => {
               {getUniqueCategories().map((category) => (
                 <option key={category} value={category}>
                   {category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={{
+            width: '140px',
+          }}>
+            <div style={{
+              marginBottom: '6px',
+              fontSize: '14px',
+              color: '#666',
+              fontWeight: '500',
+            }}>
+              Products Limit
+            </div>
+            <select
+              value={limit}
+              onChange={(e) => setLimit(parseInt(e.target.value))}
+              style={{
+                width: '100%',
+                color: 'black',
+                padding: '14px 20px',
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                fontSize: '15px',
+                outline: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                appearance: 'none',
+                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 16px center',
+              }}
+            >
+              {[10, 20, 30, 40, 50, 100, 150, 200].map((value) => (
+                <option key={value} value={value}>
+                  {value} Items
                 </option>
               ))}
             </select>

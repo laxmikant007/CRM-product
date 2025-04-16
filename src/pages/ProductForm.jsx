@@ -298,7 +298,7 @@ const ProductForm = () => {
                 { name: 'price', label: 'Price*', type: 'number', placeholder: 'Enter price', required: true, step: '0.01', min: '0' },
                 { name: 'discountPercentage', label: 'Discount (%)', type: 'number', placeholder: 'Enter discount percentage', step: '0.01', min: '0', max: '100' },
                 { name: 'stock', label: 'Stock*', type: 'number', placeholder: 'Enter stock quantity', min: '0', required: true },
-                { name: 'rating', label: 'Rating', type: 'number', placeholder: 'Enter rating (0-5)', step: '0.1', min: '0', max: '5' },
+                { name: 'rating', label: 'Rating', type: 'decimal', placeholder: 'Enter rating (0-5)', step: '0.1', min: '0', max: '5' },
               ].map((field) => (
                 <div key={field.name} style={{
                   animation: `fadeIn 0.5s ease ${parseInt(field.name.length) % 5 * 0.1}s`,
